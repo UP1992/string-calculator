@@ -1,8 +1,14 @@
 function Add(numbers) {
   if (numbers === "") return 0;
-``
-  let delimiters = /[\n,]/;
+  const numbs = convertStrToNum(numbers);
+  const filteredNums = numbs.filter(n => n <= 1000);
+  const negatives = numbs.filter(n => n < 0);
+  if (negatives.length) throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+  return filteredNums.reduce((a, b) =>  a + b , 0);
+}
 
+function convertStrToNum(numbers) {
+  let delimiters = /[\n,]/;
   if (numbers.startsWith("//")) {
     const match = numbers.match(/^\/\/(\[.*\])\n/);
     if (match) {
@@ -18,14 +24,9 @@ function Add(numbers) {
       }
     }
   }
-
-  const numbs = numbers.split(delimiters).map(Number);
-  const negatives = numbs.filter(n => n < 0);
-  if (negatives.length) throw new Error(`negatives not allowed: ${negatives.join(",")}`);
-  return numbs.reduce((a, b) => b <= 1000 ? a + b : a, 0);
+  return numbers.split(delimiters).map(Number);
 }
-
+  
 
 
 module.exports = { Add };
-  
